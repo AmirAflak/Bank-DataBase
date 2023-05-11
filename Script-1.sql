@@ -1,0 +1,6 @@
+create table account(
+	username
+
+
+
+)
