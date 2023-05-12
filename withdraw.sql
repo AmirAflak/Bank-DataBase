@@ -1,4 +1,4 @@
-CREATE PROCEDURE DepositMoney
+CREATE PROCEDURE withdraw
     @amount float
 AS
 BEGIN
@@ -8,5 +8,5 @@ BEGIN
 	(SELECT top 1 username FROM login_log ORDER BY login_time DESC);
  
     INSERT INTO Transactions (from_source, type, amount, transaction_time)
-    VALUES (@AccountNumber, 'deposit', @amount, Default);
-END
+    VALUES (@AccountNumber, 'withdraw', @amount, Default);
+END;
