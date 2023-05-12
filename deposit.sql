@@ -1,4 +1,4 @@
-CREATE PROCEDURE DepositMoney
+CREATE PROCEDURE deposit
     @amount float
 AS
 BEGIN
@@ -7,6 +7,7 @@ BEGIN
 	SELECT @AccountNumber = AccountNumber from account where username IN 
 	(SELECT top 1 username FROM login_log ORDER BY login_time DESC);
  
-    INSERT INTO Transactions (from_source, type, amount, transaction_time)
+    INSERT INTO Transactions (to_destination, type, amount, transaction_time)
     VALUES (@AccountNumber, 'deposit', @amount, Default);
 END
+
