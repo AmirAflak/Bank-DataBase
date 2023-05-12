@@ -19,7 +19,9 @@ BEGIN
 
     WHILE @@FETCH_STATUS = 0 
     BEGIN
-        DECLARE @Current_Balance money
+        DECLARE @Current_Balance float;
+		DECLARE @snapshotID int; 
+		DECLARE @table_name varchar(20);
 
 		IF @type in ('deposit', 'interest')
 		begin 
@@ -31,7 +33,13 @@ BEGIN
             accountNumber = @to_destination    
         UPDATE latest_balances 
         SET amount = @Current_Balance + @amount 
-        WHERE accountNumber = @to_destination
+        WHERE accountNumber = @to_destination;
+		INSERT INTO snapshot_log
+		VALUES (DEFAULT);
+		select @snapshotID = MAX(snapshot_id) from snapshot_log;
+		SET @table_Name = CONCAT('snapshot_', @snapshotID);
+		EXEC('CREATE TABLE ' + @table_Name + 
+          'AS SELECT * FROM latest_balances');
 		END
 
 		IF @type = 'withdraw'
@@ -45,6 +53,12 @@ BEGIN
 		UPDATE latest_balances 
         SET amount = @Current_Balance + @amount 
         WHERE accountNumber = @from_source
+		INSERT INTO snapshot_log
+		VALUES (DEFAULT);
+		select @snapshotID = MAX(snapshot_id) from snapshot_log;
+		SET @table_Name = CONCAT('snapshot_', @snapshotID);
+		EXEC('CREATE TABLE ' + @table_Name + 
+          'AS SELECT * FROM latest_balances');
 		END 
 
 		IF @type='transfer'
@@ -52,9 +66,21 @@ BEGIN
 		UPDATE latest_balances 
         SET amount = @Current_Balance - @amount 
         WHERE accountNumber = @from_source
+		INSERT INTO snapshot_log
+		VALUES (DEFAULT);
+		select @snapshotID = MAX(snapshot_id) from snapshot_log;
+		SET @table_Name = CONCAT('snapshot_', @snapshotID);
+		EXEC('CREATE TABLE ' + @table_Name + 
+          'AS SELECT * FROM latest_balances');
 		UPDATE latest_balances 
         SET amount = @Current_Balance + @amount 
         WHERE accountNumber = @to_destination
+		INSERT INTO snapshot_log
+		VALUES (DEFAULT);
+		select @snapshotID = MAX(snapshot_id) from snapshot_log;
+		SET @table_Name = CONCAT('snapshot_', @snapshotID);
+		EXEC('CREATE TABLE ' + @table_Name + 
+          'AS SELECT * FROM latest_balances');
 		END
 
         FETCH NEXT FROM cur_transactions
