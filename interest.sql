@@ -10,7 +10,7 @@ BEGIN
 
 	SELECT @Interest_amount = interest_rate from account where accountNumber = @AccountNumber;
  
-    INSERT INTO Transactions(to_destination, type, amount, transaction_time)
+    INSERT INTO transactions(to_destination, type, amount, transaction_time)
     VALUES (@AccountNumber, 'interest', @Interest_amount, Default);
 
 END;
