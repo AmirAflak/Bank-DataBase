@@ -13,5 +13,10 @@ BEGIN
  
     INSERT INTO Transactions (from_source, to_destination, type, amount, transaction_time)
     VALUES (@AccountNumber_source, @AccountNumber_destination, 'transfer', @amount, Default);
-	END;
+	END
+	ELSE
+    BEGIN
+        PRINT 'destination Account not Exists';
+    END
 END;
+
