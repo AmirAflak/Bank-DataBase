@@ -22,4 +22,6 @@ BEGIN
     UPDATE account
     SET username = @Username 
     WHERE username IS NULL
-END
+END;
+
+--ENABLE TRIGGER Generate_Unique_Username ON account;

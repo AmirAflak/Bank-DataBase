@@ -1,7 +1,7 @@
 create table account(
-	username varchar(20) primary key,
+	username varchar(20) unique,
 	accountNumber char(16) unique,
-	pass varchar(10),
+	pass varchar(256),
 	first_name varchar(10),
 	last_name varchar(10),
 	national_id char(10),
@@ -9,7 +9,6 @@ create table account(
 	type varchar(10),
 	interest_rate int
 );
-
 
 create table login_log(
 	username varchar(20) FOREIGN KEY REFERENCES account(username),
