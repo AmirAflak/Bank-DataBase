@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE Update_Latest_Balances
+CREATE PROCEDURE update_balances
 AS
 BEGIN
     DECLARE @from_source char(16); 
