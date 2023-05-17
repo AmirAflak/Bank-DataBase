@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, text
-# import pandas as pd
+import pandas as pd
 import pyodbc
 import pymssql
 
@@ -14,8 +14,13 @@ PASSWORD = 'Sqlserver2023'
 DATABASE_CONNECTION = f'mssql+pymssql://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}'
 engine = create_engine(DATABASE_CONNECTION)
 conn = engine.connect()
-result_set = conn.execute(text('SELECT * from account'))
-for row in result_set:
-    print(row)
+# result_set = conn.execute(text('SELECT * from account'))
+# for row in result_set:
+#     print(row)
+df = pd.read_sql('SELECT * FROM account', conn)
+print(df)
+
+
+
 
 
